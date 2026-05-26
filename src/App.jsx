@@ -43,8 +43,7 @@ function App() {
 
   return (
     <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-      
-      {/* HEADER CON LOGO DE LA UBB */}
+
       <header style={{ 
         display: 'flex', 
         alignItems: 'center', 
@@ -63,7 +62,7 @@ function App() {
             fontSize: '2.5rem', 
             fontWeight: '800', 
             margin: 0,
-            color: '#014898' /* Azul Corporativo UBB */
+            color: '#014898'
           }}>
             Muro de la Fama UBB
           </h1>
