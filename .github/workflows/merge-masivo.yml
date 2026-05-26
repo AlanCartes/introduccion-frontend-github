@@ -1,0 +1,40 @@
+name: Auto-Merge Muro de la Fama
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fusionar-todo:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Aprobar y fusionar todos los PRs abiertos
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Buscando Pull Requests abiertos..."
+          
+          # Obtenemos la lista de números de PR abiertos
+          PRS=$(gh pr list --state open --limit 100 --json number -q '.[].number')
+          
+          if [ -z "$PRS" ]; then
+            echo "No hay Pull Requests pendientes de fusionar."
+            exit 0
+          fi
+          
+          echo "Se encontraron los siguientes PRs: $PRS"
+          
+          # Hacemos merge uno por uno rápidamente
+          for pr in $PRS; do
+            echo "Fusionando PR #$pr..."
+            gh pr merge $pr --merge --delete-branch=false
+          done
+          
+          echo "¡Todos los Pull Requests han sido aprobados e integrados con éxito!"
